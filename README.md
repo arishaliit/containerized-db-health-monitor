@@ -1,4 +1,5 @@
-Containerized Database Health Monitor with CI/CD
+# Containerized Database Health Monitor with CI/CD
+
 This project provides a robust and automated solution for monitoring the health and basic performance of a PostgreSQL database. It demonstrates a practical application of containerization, shell scripting, Python programming, and continuous integration/continuous deployment (CI/CD) practices using GitHub Actions.
 
 🌟 Project Goal
