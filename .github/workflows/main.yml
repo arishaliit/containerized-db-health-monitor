@@ -1,0 +1,49 @@
+# This GitHub Actions workflow automates the execution of the database health monitor.
+# It runs on every push to the 'main' branch and on a daily schedule.
+name: Database Health Monitor CI/CD
+
+on:
+  push:
+    branches:
+      - main # Trigger on pushes to the main branch
+  schedule:
+    - cron: '0 0 * * *' # Run daily at midnight UTC
+
+jobs:
+  run-health-checks:
+    runs-on: ubuntu-latest # Use the latest Ubuntu runner
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4 # Action to checkout your repository code
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.9' # Specify a Python version
+
+      - name: Install Python dependencies
+        run: pip install psycopg2-binary # Install the PostgreSQL adapter for Python
+
+      - name: Start Dockerized Database
+        run: |
+          docker-compose -f docker-compose.yml up -d db
+          # Wait for the database to be ready.
+          # The Python script itself has a wait loop, but a short initial wait here helps.
+          echo "Waiting for DB to start..."
+          sleep 10 # Give DB a moment to initialize
+
+      - name: Run Database Health Monitor
+        env:
+          # Pass environment variables to the Python script for the database connection
+          POSTGRES_DB: health_db
+          POSTGRES_USER: health_user
+          POSTGRES_PASSWORD: health_password
+          DB_HOST: localhost # For GitHub Actions, the DB is on localhost relative to the runner
+          DB_PORT: 5432
+          WAIT_FOR_DB: 'true' # Tell Python script to wait for DB readiness
+        run: python monitor.py
+
+      - name: Stop Dockerized Database
+        if: always() # Ensure this step runs even if previous steps fail
+        run: docker-compose -f docker-compose.yml down

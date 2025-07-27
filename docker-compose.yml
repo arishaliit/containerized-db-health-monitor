@@ -1,0 +1,41 @@
+# --- File: docker-compose.yml (UPDATED) ---
+# You can remove the 'version: 3.8' line as it's obsolete.
+services:
+  db:
+    image: postgres:13-alpine
+    restart: always
+    environment:
+      POSTGRES_DB: health_db
+      POSTGRES_USER: health_user
+      POSTGRES_PASSWORD: health_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    # Add a healthcheck for the DB service so 'depends_on: service_healthy' works
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U health_user -d health_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  monitor:
+    build: . # This tells Docker Compose to build an image from the Dockerfile in the current directory
+    environment:
+      # Pass DB connection details to the monitor container
+      POSTGRES_DB: health_db
+      POSTGRES_USER: health_user
+      POSTGRES_PASSWORD: health_password
+      DB_HOST: db # 'db' is the service name, so it's resolvable within the docker-compose network
+      DB_PORT: 5432
+      WAIT_FOR_DB: 'true' # Tell Python script to wait for DB readiness if needed (though depends_on helps a lot)
+    # This ensures the 'monitor' service only starts after 'db' is healthy
+    depends_on:
+      db:
+        condition: service_healthy
+    # The command that the monitor container will execute
+    command: python /app/monitor.py
+
+volumes:
+  db_data: # Define the named volume for persistent data
