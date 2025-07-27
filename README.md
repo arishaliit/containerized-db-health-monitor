@@ -1,20 +1,20 @@
-# 🧠 Containerized Database Health Monitor with CI/CD
+# Containerized Database Health Monitor with CI/CD
 
 This project provides a robust, portable, and automated solution for monitoring the health and performance of a PostgreSQL database. It demonstrates practical usage of containerization, shell scripting, Python programming, and CI/CD practices via GitHub Actions.
 
 ---
 
-## 🌟 Project Goal
+## Project Goal
 
 Create a self-contained monitoring system that:
 
-- ✅ Proactively validates database health  
-- ⚠️ Detects operational issues early  
-- 💡 Supports system stability in production environments
+- Proactively validates database health  
+- Detects operational issues early  
+- Supports system stability in production environments
 
 ---
 
-## ✨ Key Features
+## Key Features
 
 - **Containerized Database**  
   Spins up an isolated PostgreSQL instance using Docker Compose for consistent testing and development.
@@ -41,7 +41,7 @@ Create a self-contained monitoring system that:
 
 ---
 
-## 🛠️ Technologies Used
+## Technologies Used
 
 | Technology        | Purpose                                         |
 |------------------|-------------------------------------------------|
@@ -55,7 +55,7 @@ Create a self-contained monitoring system that:
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### 🔧 Prerequisites
 
@@ -65,7 +65,7 @@ Create a self-contained monitoring system that:
 
 - **Python**  
   [Download Python](https://www.python.org/downloads/)  
-  > ✅ Add Python to `PATH` during install
+  > Add Python to `PATH` during install
 
 - **Git / Git Bash**  
   [Download Git](https://git-scm.com/downloads)  
@@ -73,7 +73,7 @@ Create a self-contained monitoring system that:
 
 ---
 
-### ⚙️ Installation & Setup
+### Installation & Setup
 
 ```bash
 git clone https://github.com/arishaliit/containerized-db-health-monitor.git
@@ -92,7 +92,7 @@ chmod +x run_monitor.sh
 └── README.md                 # Project documentation
 ```
 
-### 🏃 Local Usage
+### Local Usage
 To run locally:
 - Ensure Docker Desktop is running
 - From the project root, run:
